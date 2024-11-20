@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Tab</title>
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/1295027983807156224/1308907005397831701/461483305_122109577970526217_2765250819353826059_n.png?ex=673fa624&is=673e54a4&hm=3fc2c6861d2293ebe69f534c9cc92c5f213e68d38d31596f14c5f97a973e2009" type="image/png">
+    <script async src="https://cse.google.com/cse.js?cx=43fa36a46289b4333"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://media.discordapp.net/attachments/1295027983807156224/1308910615645126677/wallpaperflare.com_wallpaper.jpg?ex=673fa981&is=673e5801&hm=5a4e2c191b80fbcfbfb809973b5f4d828b766fafa4dca50e22f01debd766ddb5&=&format=webp&width=1202&height=675') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* تحويل الشاشة إلى مربعة */
+        .container {
+            width: 858px;
+            height: 858px;
+            background-color: transparent; /* جعل الخلفية شفافة تمامًا */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: -500px; /* رفع المحتوى قليلاً للأعلى */
+        }
+
+        .gsc-footer {
+            display: none;
+        }
+
+        #header {
+            text-align: center;
+            color: #ff3b30;
+            font-size: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .gsc-control-cse {
+            background-color: #ff3b30;
+            border-radius: 10px;
+            padding: 30px;
+            width: 80%;
+            margin: 20px auto;
+            max-width: 700px;
+        }
+
+        .gsc-input-box {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+        }
+
+        .gsc-search-button {
+            background-color: #000000;
+            border-radius: 5px;
+            color: #ff3b30;
+        }
+
+        .gsc-webResult {
+            background: url('') no-repeat center center fixed;
+            background-size: cover;
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .gsc-webResult .gsc-webResult-title {
+            color: #ff3b30;
+        }
+
+        #new-tab-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #ff3b30;
+            padding: 10px;
+            font-size: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            border: 2px solid #ff3b30;
+        }
+
+        #bookmarks {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .bookmark {
+            text-align: center;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .bookmark img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 5px;
+        }
+
+        .bookmark span {
+            display: block;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* توسيط محرك البحث */
+        .gcse-search {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* تنسيق حقل الـ URL */
+        #url-input-container {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        #url-input {
+            width: 250px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid red;
+            background-color: rgba(255, 255, 255, 0.7);
+            color: black;
+        }
+
+        #open-btn {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border: 2px solid red;
+            border-radius: 5px;
+            color: red;
+            cursor: pointer;
+        }
+
+        #add-bookmark-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+
+        #add-bookmark-modal input,
+        #add-bookmark-modal button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 2px solid red;
+            border-radius: 5px;
+        }
+
+        #add-bookmark-modal button {
+            background-color: #ff3b30;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="header">LeVeRa Browser</div>
+
+        <!-- حقل الـ URL الآن يظهر تحت العنوان في المنتصف -->
+        <div id="url-input-container">
+            <input type="text" id="url-input" placeholder="Enter URL" onkeydown="checkEnter(event)" />
+            <button id="open-btn" onclick="openUrl()">Open</button>
+        </div>
+
+        <!-- محرك البحث يظهر في المنتصف أسفل حقل الـ URL -->
+        <div class="gcse-search"></div>
+
+        <div id="new-tab-btn" onclick="openNewTab()">+</div>
+
+        <div id="bookmarks">
+            <div class="bookmark" onclick="window.open(location.href, '_blank')">
+                <img src="https://cdn.discordapp.com/attachments/1295027983807156224/1308907005397831701/461483305_122109577970526217_2765250819353826059_n.png?ex=673fa624&is=673e54a4&hm=3fc2c6861d2293ebe69f534c9cc92c5f213e68d38d31596f14c5f97a973e2009&" alt="Levera">
+                <span>Levera</span>
+            </div>
+
+            <div class="bookmark" onclick="showAddBookmarkModal()">
+                <span>Add Bookmarks</span>
+            </div>
+        </div>
+
+        <div id="add-bookmark-modal">
+            <input type="text" id="bookmark-url" placeholder="Enter URL" />
+            <input type="text" id="bookmark-title" placeholder="Enter Title" />
+            <button onclick="addBookmark()">Add</button>
+        </div>
+    </div>
+
+    <script>
+        function openNewTab() {
+            window.open(location.href, '_blank');
+        }
+
+        function openUrl() {
+            const url = document.getElementById("url-input").value;
+            if (url) {
+                window.location.href = url;
+            }
+        }
+
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                openUrl();
+            }
+        }
+
+        function showAddBookmarkModal() {
+            document.getElementById("add-bookmark-modal").style.display = "block";
+        }
+
+        function addBookmark() {
+            const url = document.getElementById("bookmark-url").value;
+            const title = document.getElementById("bookmark-title").value;
+
+            if (url && title) {
+                const bookmarkDiv = document.createElement("div");
+                bookmarkDiv.classList.add("bookmark");
+                bookmarkDiv.onclick = function() {
+                    window.open(url, '_blank');
+                };
+
+                const img = document.createElement("img");
+                img.src = "https://www.google.com/s2/favicons?domain=" + url;
+                bookmarkDiv.appendChild(img);
+
+                const span = document.createElement("span");
+                span.textContent = title;
+                bookmarkDiv.appendChild(span);
+
+                document.getElementById("bookmarks").appendChild(bookmarkDiv);
+                document.getElementById("add-bookmark-modal").style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
